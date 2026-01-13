@@ -1,0 +1,24 @@
+# Git
+.git
+.gitignore
+
+# Python/Environment
+__pycache__
+*.pyc
+.venv
+venv
+env
+
+# DVC & Data
+# We usually ignore data because it's too big (DVC handles it)
+# We KEEP 'models/' because we want the trained model inside the image
+data/
+.dvc
+dvc.yaml
+dvc.lock
+
+# CI/CD
+.github
+tests/
+Dockerfile
+.dockerignore

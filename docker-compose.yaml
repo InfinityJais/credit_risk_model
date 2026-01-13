@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    container_name: credit_risk_api
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount models/ locally so you can update them without rebuilding
+      - ./models:/app/models
+    environment:
+      - MLFLOW_TRACKING_URI=file:/app/mlruns
+    restart: always
+
+  # Optional: Add MLflow UI service
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:latest
+    container_name: mlflow_ui
+    ports:
+      - "8001:8000"
+    command: mlflow ui --host 0.0.0.0 --port 5000
+    volumes:
+      - ./mlruns:/mlruns

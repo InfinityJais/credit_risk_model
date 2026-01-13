@@ -1,0 +1,53 @@
+stages:
+  clean:
+    cmd: python src/clean_data.py
+    deps:
+      - src/clean_data.py
+      - data/raw/case_study1.xlsx
+      - data/raw/case_study2.xlsx
+    params:
+      - clean
+      - data
+    outs:
+      - data/interim/merged_data.csv
+
+  preprocess:
+    cmd: python src/preprocess.py
+    deps:
+      - src/preprocess.py
+      - data/interim/merged_data.csv
+    params:
+      - preprocess
+      - base.random_state
+    outs:
+      - data/processed/X_train.csv
+      - data/processed/y_train.csv
+      - data/processed/X_test.csv
+      - data/processed/y_test.csv
+      - models/label_encoder.joblib
+
+  train:
+    cmd: python src/train.py
+    deps:
+      - src/train.py
+      - data/processed/X_train.csv
+      - data/processed/y_train.csv
+    params:
+      - train
+      - xgboost
+      - random_forest
+      - mlflow
+    outs:
+      - models/model.joblib
+      - models/model_columns.joblib
+
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+      - src/evaluate.py
+      - models/model.joblib
+      - data/processed/X_test.csv
+      - data/processed/y_test.csv
+    metrics:
+      - metrics.json:
+          cache: false

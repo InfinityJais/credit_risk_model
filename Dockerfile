@@ -1,21 +1,37 @@
-# Install uv
+# Use a lightweight Python base image
 FROM python:3.12-slim
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
 
-# Change the working directory to the `app` directory
+# Set working directory
 WORKDIR /app
 
-# Copy the lockfile and `pyproject.toml` into the image
-COPY uv.lock /app/uv.lock
-COPY pyproject.toml /app/pyproject.toml
+# Install system dependencies (needed for some compiled python libraries)
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libgomp1 \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install dependencies
-RUN uv sync --frozen --no-install-project
+# Copy requirements first to leverage Docker cache
+COPY requirements.txt .
 
-# Copy the project into the image
-COPY . /app
+# Environment Variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH=/app
+ENV MODEL_DIR=/app/models
 
-# Sync the project
-RUN uv sync --frozen
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
-CMD [ "python", "credit_risk_model/foo.py" ]
+# Copy the source code and models
+COPY src/ src/
+COPY models/ models/
+COPY params.yaml .
+
+# Set environment variables
+ENV PYTHONPATH=/app
+
+# Expose the port FastAPI runs on
+EXPOSE 8000
+
+# Command to run the application
+CMD ["uvicorn", "src.credit_risk_model.api.app:app", "--host", "0.0.0.0", "--port", "8000"]
