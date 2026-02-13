@@ -1,0 +1,35 @@
+schema: '2.0'
+stages:
+  clean:
+    cmd: python src/credit_risk_model/clean_data.py
+    deps:
+    - path: data/raw/case_study1.xlsx
+      hash: md5
+      md5: 0826d1bf9d2604ec81984d79828caed6
+      size: 5382959
+    - path: data/raw/case_study2.xlsx
+      hash: md5
+      md5: 3c5a697f00f4fdeb14a291d555881d59
+      size: 13268022
+    - path: src/credit_risk_model/clean_data.py
+      hash: md5
+      md5: 9bd4ff9702295ebcced9bcfa4306affa
+      size: 2954
+    params:
+      params.yaml:
+        clean:
+          missing_value: -99999
+          null_threshold: 10000
+        data:
+          raw_bank: data/raw/case_study1.xlsx
+          raw_cibil: data/raw/case_study2.xlsx
+          interim: data/interim/merged_data.csv
+          x_train: data/processed/X_train.csv
+          y_train: data/processed/y_train.csv
+          x_test: data/processed/X_test.csv
+          y_test: data/processed/y_test.csv
+    outs:
+    - path: data/interim/merged_data.csv
+      hash: md5
+      md5: 0b30b568135161fdc0991132a753f0cc
+      size: 9756301
