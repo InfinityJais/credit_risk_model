@@ -63,7 +63,10 @@ class EvaluationPipeline:
         if not os.path.exists(test_data_path):
             raise FileNotFoundError(f"Test data not found at: {test_data_path}")
         if not os.path.exists(model_path):
-            raise FileNotFoundError(f"Model not found at: {model_path}. Run 'python src/train.py' first.")
+            raise FileNotFoundError(
+                f"Model not found at: {model_path}. "
+                "Run 'python src/credit_risk_model/train.py' first."
+            )
 
         # Load Artifacts
         print("Loading model and test data...")

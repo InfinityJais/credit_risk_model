@@ -80,10 +80,16 @@ class ModelTrainer:
         print("Loading processed data...")
         
         if not os.path.exists(x_train_path):
-            raise FileNotFoundError(f"Training data not found at: {x_train_path}. Run 'python src/preprocess.py' first.")
+            raise FileNotFoundError(
+                f"Training data not found at: {x_train_path}. "
+                "Run 'python src/credit_risk_model/preprocess.py' first."
+            )
 
         if not os.path.exists(y_train_path):
-             raise FileNotFoundError(f"Label data not found at: {y_train_path}. Run 'python src/preprocess.py' first.")
+             raise FileNotFoundError(
+                 f"Label data not found at: {y_train_path}. "
+                 "Run 'python src/credit_risk_model/preprocess.py' first."
+             )
 
         X_train = pd.read_csv(x_train_path)
         y_train = pd.read_csv(y_train_path).values.ravel() 

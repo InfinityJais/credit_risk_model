@@ -155,6 +155,10 @@ class CreditRiskScorer(ScoringStrategy):
 
         # 2. Predict
         prediction_encoded = self.model.predict(processed_df)[0]
+        confidence = None
+        if hasattr(self.model, "predict_proba"):
+            proba = self.model.predict_proba(processed_df)[0]
+            confidence = float(max(proba))
         
         # 3. Decode Label
         if hasattr(self.label_encoder, 'inverse_transform'):
@@ -177,7 +181,8 @@ class CreditRiskScorer(ScoringStrategy):
 
         return {
             "risk_band": str(prediction_label),
-            "status": decision_status
+            "status": decision_status,
+            "confidence": confidence
         }
 
 

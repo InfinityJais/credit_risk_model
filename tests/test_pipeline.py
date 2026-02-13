@@ -63,7 +63,7 @@ class TestPipeline:
         """
         path = self.PATHS["cleaned_data"]
         if not os.path.exists(path):
-            pytest.skip("Cleaned data not found. Run 'dvc repro' or 'src/clean_data.py' first.")
+            pytest.skip("Cleaned data not found. Run 'dvc repro' or 'src/credit_risk_model/clean_data.py' first.")
         
         df = pd.read_csv(path)
         assert not df.empty, "Cleaned data is empty."
@@ -78,7 +78,7 @@ class TestPipeline:
         """
         path = self.PATHS["train_data"]
         if not os.path.exists(path):
-            pytest.skip("Processed data not found. Run 'src/preprocess.py' first.")
+            pytest.skip("Processed data not found. Run 'src/credit_risk_model/preprocess.py' first.")
 
         df = pd.read_csv(path)
         
@@ -99,7 +99,7 @@ class TestPipeline:
         test_path = self.PATHS["test_data"]
 
         if not os.path.exists(model_path):
-            pytest.skip("Model not found. Run 'src/train.py' first.")
+            pytest.skip("Model not found. Run 'src/credit_risk_model/train.py' first.")
         
         if not os.path.exists(test_path):
             pytest.skip("Test data not found for prediction check.")

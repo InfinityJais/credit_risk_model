@@ -1,8 +1,8 @@
 stages:
   clean:
-    cmd: python src/clean_data.py
+    cmd: python src/credit_risk_model/clean_data.py
     deps:
-      - src/clean_data.py
+      - src/credit_risk_model/clean_data.py
       - data/raw/case_study1.xlsx
       - data/raw/case_study2.xlsx
     params:
@@ -12,9 +12,9 @@ stages:
       - data/interim/merged_data.csv
 
   preprocess:
-    cmd: python src/preprocess.py
+    cmd: python src/credit_risk_model/preprocess.py
     deps:
-      - src/preprocess.py
+      - src/credit_risk_model/preprocess.py
       - data/interim/merged_data.csv
     params:
       - preprocess
@@ -27,9 +27,9 @@ stages:
       - models/label_encoder.joblib
 
   train:
-    cmd: python src/train.py
+    cmd: python src/credit_risk_model/train.py
     deps:
-      - src/train.py
+      - src/credit_risk_model/train.py
       - data/processed/X_train.csv
       - data/processed/y_train.csv
     params:
@@ -42,9 +42,9 @@ stages:
       - models/model_columns.joblib
 
   evaluate:
-    cmd: python src/evaluate.py
+    cmd: python src/credit_risk_model/evaluate.py
     deps:
-      - src/evaluate.py
+      - src/credit_risk_model/evaluate.py
       - models/model.joblib
       - data/processed/X_test.csv
       - data/processed/y_test.csv
